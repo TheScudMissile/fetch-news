@@ -16,6 +16,7 @@
     "@types/react-test-renderer": "^16.9.0",
     "babel-preset-expo": "^7.0.0",
     "jest": "^24.9.0",
+    "jest-expo": "^35.0.0",
     "react-test-renderer": "16.9.0",
     "tslint": "^5.20.0",
     "tslint-config-airbnb": "^5.11.2",
@@ -30,7 +31,7 @@
       "jsx",
       "node"
     ],
-    "preset": "react-native"
+    "preset": "jest-expo"
   },
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
