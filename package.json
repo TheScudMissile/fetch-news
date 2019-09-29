@@ -1,0 +1,45 @@
+{
+  "dependencies": {
+    "expo": "^35.0.0",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
+    "react-native-elements": "^1.2.3",
+    "react-native-web": "^0.11.7"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/react": "^16.8.23",
+    "@types/react-native": "^0.57.65",
+    "@types/react-native-elements": "^0.18.0",
+    "@types/react-test-renderer": "^16.9.0",
+    "babel-preset-expo": "^7.0.0",
+    "jest": "^24.9.0",
+    "react-test-renderer": "16.9.0",
+    "tslint": "^5.20.0",
+    "tslint-config-airbnb": "^5.11.2",
+    "typescript": "^3.4.5"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json",
+      "jsx",
+      "node"
+    ],
+    "preset": "react-native"
+  },
+  "main": "node_modules/expo/AppEntry.js",
+  "private": true,
+  "scripts": {
+    "android": "expo start --android",
+    "eject": "expo eject",
+    "ios": "expo start --ios",
+    "start": "expo start",
+    "test": "yarn tslint && yarn tsc-test && yarn jest",
+    "tsc-test": "tsc --project . --noEmit",
+    "tslint": "tslint --project ."
+  }
+}
