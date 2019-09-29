@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Container } from 'native-base';
+import Header from './src/components/Header';
 
-export default () => {
-  return (
-    <View>
-      <Text>Hello there!</Text>
-    </View>
-  );
-};
+export default () => (
+  <Container>
+    <Header />
+  </Container>
+);

@@ -2,6 +2,7 @@
   "dependencies": {
     "expo": "^35.0.0",
     "mem": "^5.1.1",
+    "native-base": "^2.13.8",
     "react": "16.9.0",
     "react-dom": "16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
@@ -24,10 +25,7 @@
     "moduleFileExtensions": [
       "ts",
       "tsx",
-      "js",
-      "json",
-      "jsx",
-      "node"
+      "js"
     ],
     "preset": "jest-expo"
   },
@@ -38,7 +36,7 @@
     "eject": "expo eject",
     "ios": "expo start --ios",
     "start": "expo start",
-    "test": "yarn tslint && yarn tsc-test && yarn jest",
+    "test": "yarn tslint && yarn tsc-test && yarn jest --watch",
     "tsc-test": "tsc --project . --noEmit",
     "tslint": "tslint --project ."
   }
