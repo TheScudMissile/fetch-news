@@ -13,6 +13,20 @@ import { NEWS_API_KEY } from '../constants';
 import { Article } from '../types';
 import axios from 'axios';
 import { Linking } from 'react-native';
+import moment from 'moment';
+
+const processTitle = (titleWithSource: string) => {
+  const sep = titleWithSource.lastIndexOf('-');
+  const title = titleWithSource.substr(
+    0,
+    sep - 1 // remove " -" from title
+  );
+
+  // remove "- " from source
+  const source = titleWithSource.substr(sep + 2);
+
+  return [source, title];
+};
 
 const fetchTopHeadlines = async (
   setNewsArticles: (articles: Article[]) => void
@@ -54,34 +68,42 @@ export default () => {
 
   return (
     <Content padder>
-      {newsArticles.map(article => (
-        <Card
-          key={article.url}
-          style={{ marginBottom: 15, marginLeft: 15, marginRight: 15 }}
-        >
-          <CardItem>
-            <Left>
-              <Body>
-                <Text style={{ marginBottom: 15 }}>Title: {article.title}</Text>
-                <Text style={{ marginBottom: 15 }}>
-                  Description: {article.description}
-                </Text>
-                <Text style={{ marginBottom: 15 }}>
-                  Published: {article.publishedAt}
-                </Text>
-                <Button
-                  color="#34baeb"
-                  transparent
-                  style={{ marginLeft: 0 }}
-                  onPress={() => navigateToArticle(article.url)}
-                >
-                  <Text style={{ paddingLeft: 0 }}>Full Article</Text>
-                </Button>
-              </Body>
-            </Left>
-          </CardItem>
-        </Card>
-      ))}
+      {newsArticles.map(article => {
+        const [source, title] = processTitle(article.title);
+
+        return (
+          <Card
+            key={article.url}
+            style={{ marginBottom: 15, marginLeft: 15, marginRight: 15 }}
+          >
+            <CardItem>
+              <Left>
+                <Body>
+                  <Text>{source}</Text>
+                  <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+                  <Text style={{ marginBottom: 10, fontSize: 12 }}>
+                    {moment(article.publishedAt).format(
+                      'MMM D YYYY, h:mm:ss a'
+                    )}
+                  </Text>
+
+                  <Text style={{ marginBottom: 10 }}>
+                    {article.description}
+                  </Text>
+                  <Button
+                    color="#34baeb"
+                    transparent
+                    style={{ marginLeft: 0 }}
+                    onPress={() => navigateToArticle(article.url)}
+                  >
+                    <Text style={{ paddingLeft: 0 }}>Full Article</Text>
+                  </Button>
+                </Body>
+              </Left>
+            </CardItem>
+          </Card>
+        );
+      })}
     </Content>
   );
 };
