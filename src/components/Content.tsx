@@ -12,7 +12,7 @@ import {
 import { NEWS_API_KEY } from '../constants';
 import { Article } from '../types';
 import axios from 'axios';
-import { Linking } from 'react-native';
+import { Image, Linking } from 'react-native';
 import moment from 'moment';
 
 const processTitle = (titleWithSource: string) => {
@@ -37,7 +37,6 @@ const fetchTopHeadlines = async (
     );
     setNewsArticles(response.data.articles);
   } catch (error) {
-    console.error(error);
     Toast.show({
       buttonText: 'OK',
       duration: 3000,
@@ -50,7 +49,6 @@ const navigateToArticle = (url: string) => {
   try {
     Linking.openURL(url);
   } catch (error) {
-    console.error(error);
     Toast.show({
       buttonText: 'OK',
       duration: 3000,
@@ -70,36 +68,48 @@ export default () => {
     <Content padder>
       {newsArticles.map(article => {
         const [source, title] = processTitle(article.title);
-
         return (
           <Card
             key={article.url}
             style={{ marginBottom: 15, marginLeft: 15, marginRight: 15 }}
           >
-            <CardItem>
+            <CardItem header bordered>
               <Left>
                 <Body>
                   <Text>{source}</Text>
-                  <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-                  <Text style={{ marginBottom: 10, fontSize: 12 }}>
+                  <Text note>
                     {moment(article.publishedAt).format(
                       'MMM D YYYY, h:mm:ss a'
                     )}
                   </Text>
-
-                  <Text style={{ marginBottom: 10 }}>
-                    {article.description}
-                  </Text>
-                  <Button
-                    color="#34baeb"
-                    transparent
-                    style={{ marginLeft: 0 }}
-                    onPress={() => navigateToArticle(article.url)}
-                  >
-                    <Text style={{ paddingLeft: 0 }}>Full Article</Text>
-                  </Button>
                 </Body>
               </Left>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Image
+                  source={{ uri: article.urlToImage }}
+                  style={{
+                    height: 200,
+                    width: '100%',
+                  }}
+                />
+              </Body>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
+                  {title}
+                </Text>
+                <Text>{article.description}</Text>
+                <Button
+                  color="#34baeb"
+                  transparent
+                  onPress={() => navigateToArticle(article.url)}
+                >
+                  <Text style={{ paddingLeft: 0 }}>Full Article</Text>
+                </Button>
+              </Body>
             </CardItem>
           </Card>
         );

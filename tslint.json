@@ -27,7 +27,6 @@
       }
     ],
     "interface-name": [true, "never-prefix"],
-    "no-console": [true, "log"],
     "ter-arrow-parens": [true, "as-needed"]
   }
 }
