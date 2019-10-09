@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'React';
+import React, { useCallback, useEffect, useState } from 'React';
 import {
   Body,
   Button,
@@ -12,9 +12,13 @@ import {
 import { NEWS_API_KEY } from '../constants';
 import { Article } from '../types';
 import axios from 'axios';
-import { Image, Linking } from 'react-native';
+import { Image, Linking, RefreshControl } from 'react-native';
 import moment from 'moment';
 
+/**
+ * Handles splitting the article title from its source
+ * @param titleWithSource title string returned by NewsApi is formatted like: "Title - Source"
+ */
 const processTitle = (titleWithSource: string) => {
   const sep = titleWithSource.lastIndexOf('-');
   const title = titleWithSource.substr(
@@ -28,6 +32,10 @@ const processTitle = (titleWithSource: string) => {
   return [source, title];
 };
 
+/**
+ * Fetches the current top headlines from all possible sources
+ * @param setNewsArticles function to update article state
+ */
 const fetchTopHeadlines = async (
   setNewsArticles: (articles: Article[]) => void
 ) => {
@@ -45,6 +53,10 @@ const fetchTopHeadlines = async (
   }
 };
 
+/**
+ * Opens the article in a browser at the specified url
+ * @param url
+ */
 const navigateToArticle = (url: string) => {
   try {
     Linking.openURL(url);
@@ -59,13 +71,26 @@ const navigateToArticle = (url: string) => {
 
 export default () => {
   const [newsArticles, setNewsArticles] = useState<Article[]>([]);
+  const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+  // Called when user pulls down on the scroll view
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    fetchTopHeadlines(setNewsArticles);
+    setTimeout(() => setRefreshing(false), 1000);
+  }, [refreshing]);
 
   useEffect(() => {
     fetchTopHeadlines(setNewsArticles);
   }, []);
 
   return (
-    <Content padder>
+    <Content
+      padder
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }
+    >
       {newsArticles.map(article => {
         const [source, title] = processTitle(article.title);
         return (
